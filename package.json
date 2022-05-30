@@ -1,5 +1,5 @@
 {
-  "name": "@outstand/elixir-ls",
+  "name": "outstand-elixir-ls",
   "displayName": "ElixirLS: Elixir support and debugger",
   "homepage": "https://github.com/elixir-lsp/elixir-ls",
   "repository": {
