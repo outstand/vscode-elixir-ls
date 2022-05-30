@@ -1,10 +1,10 @@
 {
-  "name": "elixir-ls",
+  "name": "@outstand/elixir-ls",
   "displayName": "ElixirLS: Elixir support and debugger",
   "homepage": "https://github.com/elixir-lsp/elixir-ls",
   "repository": {
     "type": "git",
-    "url": "https://github.com/elixir-lsp/vscode-elixir-ls.git"
+    "url": "https://github.com/outstand/vscode-elixir-ls.git"
   },
   "icon": "images/logo.png",
   "description": "Elixir support with debugger, autocomplete, and more. Powered by ElixirLS.",
@@ -166,6 +166,18 @@
             "type": "string"
           },
           "default": []
+        },
+        "elixirLS.advanced.commandPath": {
+          "scope": "resource",
+          "type": "string",
+          "description": "Path to the language_server.(sh|bat) script.",
+          "minLength": 0,
+          "default": ""
+        },
+        "elixirLS.advanced.skipElixirCheck": {
+          "type": "boolean",
+          "description": "Skip startup check that runs `elixir`",
+          "default": false
         }
       }
     },
@@ -500,6 +512,7 @@
     "@vscode/test-electron": "^1.6.1"
   },
   "dependencies": {
+    "is-relative": "^1.0.0",
     "shelljs": "^0.8.5",
     "vscode-languageclient": "^7.0.0"
   },

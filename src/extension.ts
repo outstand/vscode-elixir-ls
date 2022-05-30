@@ -20,6 +20,7 @@ import {
 import * as os from "os";
 import Commands from "./constants/commands";
 import runFromCodeLens from "./commands/runTestFromCodeLens";
+const isRelative = require('is-relative');
 
 interface TerminalLinkWithData extends vscode.TerminalLink {
   data: {
@@ -44,6 +45,11 @@ function testElixirCommand(command: string): false | Buffer {
 }
 
 function testElixir(): boolean {
+  let vsconfig = vscode.workspace.getConfiguration('elixirLS');
+  if (vsconfig.advanced.skipElixirCheck) {
+    return true;
+  }
+
   let testResult = testElixirCommand("elixir");
   if (testResult === false) {
     // Try finding elixir in the path directly
@@ -365,8 +371,29 @@ function startClient(context: ExtensionContext, clientOptions: LanguageClientOpt
   const command =
     os.platform() == "win32" ? "language_server.bat" : "language_server.sh";
 
+  let serverCommand = context.asAbsolutePath("./elixir-ls-release/" + command);
+
+  let vsconfig = vscode.workspace.getConfiguration('elixirLS');
+  if (vsconfig.advanced.commandPath != "") {
+    if(isRelative(vsconfig.advanced.commandPath)) {
+      if (clientOptions.workspaceFolder) {
+        let maybeServerCommand = vscode.Uri.joinPath(clientOptions.workspaceFolder!.uri, vsconfig.advanced.commandPath, command);
+        vscode.workspace.fs.stat(maybeServerCommand);
+        serverCommand = maybeServerCommand.fsPath;
+      } else {
+        vscode.window.showErrorMessage(
+          "Relative commandPath specified but no workspace found!"
+        )
+      }
+    } else {
+      let maybeServerCommand = vscode.Uri.joinPath(vsconfig.advanced.commandPath, command);
+      vscode.workspace.fs.stat(maybeServerCommand);
+      serverCommand = maybeServerCommand.fsPath;
+    }
+  }
+
   const serverOpts = {
-    command: context.asAbsolutePath("./elixir-ls-release/" + command),
+    command: serverCommand
   };
 
   // If the extension is launched in debug mode then the `debug` server options are used instead of `run`
