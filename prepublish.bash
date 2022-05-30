@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
 tsc -p ./
 cp elixir-ls/CHANGELOG.md .
