@@ -367,7 +367,7 @@ function configureRunTestFromCodeLens() {
   vscode.commands.registerCommand(Commands.RUN_TEST_FROM_CODELENS, runFromCodeLens);
 }
 
-function startClient(context: ExtensionContext, clientOptions: LanguageClientOptions): LanguageClient {
+async function startClient(context: ExtensionContext, clientOptions: LanguageClientOptions): Promise<LanguageClient> {
   const command =
     os.platform() == "win32" ? "language_server.bat" : "language_server.sh";
 
@@ -378,17 +378,30 @@ function startClient(context: ExtensionContext, clientOptions: LanguageClientOpt
     if(isRelative(vsconfig.advanced.commandPath)) {
       if (clientOptions.workspaceFolder) {
         let maybeServerCommand = vscode.Uri.joinPath(clientOptions.workspaceFolder!.uri, vsconfig.advanced.commandPath, command);
-        vscode.workspace.fs.stat(maybeServerCommand);
-        serverCommand = maybeServerCommand.fsPath;
+        try {
+          await vscode.workspace.fs.stat(maybeServerCommand);
+          serverCommand = maybeServerCommand.fsPath;
+        } catch {
+          vscode.window.showWarningMessage(
+            "ElixirLS: Specified commandPath is invalid. Falling back to built-in."
+          )
+        }
+        
       } else {
         vscode.window.showErrorMessage(
-          "Relative commandPath specified but no workspace found!"
+          "ElixirLS: Relative commandPath specified but no workspace found!"
         )
       }
     } else {
       let maybeServerCommand = vscode.Uri.joinPath(vsconfig.advanced.commandPath, command);
-      vscode.workspace.fs.stat(maybeServerCommand);
-      serverCommand = maybeServerCommand.fsPath;
+      try {
+        await vscode.workspace.fs.stat(maybeServerCommand);
+        serverCommand = maybeServerCommand.fsPath;
+      } catch {
+        vscode.window.showWarningMessage(
+          "ElixirLS: Specified commandPath is invalid. Falling back to built-in."
+        )
+      }
     }
   }
 
@@ -469,7 +482,7 @@ export function activate(context: ExtensionContext): void {
     },
   };
 
-  function didOpenTextDocument(document: vscode.TextDocument): void {
+  async function didOpenTextDocument(document: vscode.TextDocument) {
     // We are only interested in elixir related files
     if (["elixir", "eex", "html-eex", "phoenix-heex", "surface"].indexOf(document.languageId) < 0) {
       return;
@@ -489,7 +502,7 @@ export function activate(context: ExtensionContext): void {
         // no workspace folders - use default client
         if (!defaultClient) {
           // Create the language client and start the client.
-          defaultClient = startClient(context, clientOptions);
+          defaultClient = await startClient(context, clientOptions);
         }
         return;
       }
@@ -525,7 +538,7 @@ export function activate(context: ExtensionContext): void {
         }
       );
 
-      clients.set(folder.uri.toString(), startClient(context, workspaceClientOptions));
+      clients.set(folder.uri.toString(), await startClient(context, workspaceClientOptions));
     }
   }
 
