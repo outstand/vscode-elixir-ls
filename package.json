@@ -1,6 +1,6 @@
 {
   "name": "outstand-elixir-ls",
-  "displayName": "ElixirLS: Elixir support and debugger",
+  "displayName": "Outstand ElixirLS: Elixir support and debugger",
   "homepage": "https://github.com/elixir-lsp/elixir-ls",
   "repository": {
     "type": "git",
@@ -10,7 +10,7 @@
   "description": "Elixir support with debugger, autocomplete, and more. Powered by ElixirLS.",
   "author": "The Elixir community",
   "license": "MIT",
-  "publisher": "JakeBecker",
+  "publisher": "Outstand",
   "version": "0.9.0",
   "engines": {
     "vscode": "^1.52.0"
