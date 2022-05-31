@@ -1,4 +1,12 @@
-# ElixirLS: Elixir support and debugger for VS Code [![Actions Status](https://img.shields.io/github/workflow/status/elixir-lsp/vscode-elixir-ls/CI.svg)](https://github.com/elixir-lsp/vscode-elixir-ls/actions)
+# Outstand ElixirLS: Elixir support and debugger for VS Code
+
+## This is a fork!
+
+You're probably looking for the [upstream project](https://marketplace.visualstudio.com/items?itemName=JakeBecker.elixir-ls).
+
+This fork currently adds the ability to specify the `commandPath` to the elixir-ls startup script. We're using this at [Outstand](https://outstand.com) to run the language server inside of a dockerized application.
+
+## Description
 
 Provides Elixir language support and debugger. This extension is powered by the [Elixir Language Server (ElixirLS)](https://github.com/elixir-lsp/elixir-ls), an Elixir implementation of Microsoft's IDE-agnostic [Language Server Protocol](https://github.com/Microsoft/language-server-protocol) and [VS Code debug protocol](https://code.visualstudio.com/docs/extensionAPI/api-debugging). Visit its page for more information. For a guide to debugger usage in Elixir, read [this blog post](https://medium.com/@JakeBeckerCode/debugging-elixir-in-vs-code-400e21814614).
 
@@ -18,12 +26,6 @@ Features include:
 - Quick symbol lookup in file (Thanks to @mattbaker)
 
 ![Screenshot](https://raw.githubusercontent.com/elixir-lsp/elixir-ls/master/images/screenshot.png)
-
-## This is now the main vscode-elixir-ls repo
-
-The [elixir-lsp](https://github.com/elixir-lsp)/[vscode-elixir-ls](https://github.com/elixir-lsp/vscode-elixir-ls) repo began as a fork when the original repo at [JakeBecker](https://github.com/JakeBecker)/[vscode-elixir-ls](https://github.com/JakeBecker/vscode-elixir-ls) became inactive for an extended period of time. So we decided to start an active fork to merge dormant PR's and fix issues where possible. We also believe in an open and shared governance model to share the work instead of relying on one person to shoulder the whole burden.
-
-The original repository has now been deprecated in favor of this one. Future updates to the original [VS Code ElixirLS extension](https://marketplace.visualstudio.com/items?itemName=JakeBecker.elixir-ls) will come from this repo.
 
 ## Default settings
 
